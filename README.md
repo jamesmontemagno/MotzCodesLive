@@ -2,9 +2,8 @@
 Sample Resources for Motz Codes Live sessions
 
 ### Follow Me
-
-Blog: http://motzcod.es
-Twitter: http://www.twitter.com/jamesmontemagno
+* Blog: http://motzcod.es
+* Twitter: http://www.twitter.com/jamesmontemagno
 
 # Video Recordings:
 * YouTube Channel: http://youtube.com/user/jamesmontemagno
