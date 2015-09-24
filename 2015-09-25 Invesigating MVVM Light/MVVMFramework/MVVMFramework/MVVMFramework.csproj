@@ -34,15 +34,15 @@
     <Compile Include="Interfaces\IDataStore.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\OfflineDataStore.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
 </Project>
