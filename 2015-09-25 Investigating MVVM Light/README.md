@@ -4,7 +4,7 @@
 
 # Video Recordings:
 * YouTube Channel: http://youtube.com/user/jamesmontemagno
-* Video: https://www.youtube.com/watch?v=eBcGRV3tp24
+* Video: https://youtu.be/NnDw5lNJBFo
 
 Code: In this repo!
 

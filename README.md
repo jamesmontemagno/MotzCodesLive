@@ -12,6 +12,7 @@ Sample Resources for Motz Codes Live Sessions
 * 2015-08-28: [Mobile App Preferences](https://www.youtube.com/watch?v=VNPLxeq9ZII)
 * 2015-09-11: [Pull to Refresh in Xamarin.Forms](https://www.youtube.com/watch?v=qYsjgiNGkrw)
 * 2015-09-18: [Introduction to MVVM](https://www.youtube.com/watch?v=eBcGRV3tp24)
+* 2015-09-25 [Investigating MVVM Light Toolkit](https://youtu.be/NnDw5lNJBFo)
 
 # Request a Topic
 Simply create a new issue for a request!
