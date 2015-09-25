@@ -33,14 +33,6 @@ namespace MVVMFramework.iOS
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UITextField TextUsername { get; set; }
 
-		[Action ("PasswordChanged:")]
-		[GeneratedCode ("iOS Designer", "1.0")]
-		partial void PasswordChanged (UITextField sender);
-
-		[Action ("UsernameChanged:")]
-		[GeneratedCode ("iOS Designer", "1.0")]
-		partial void UsernameChanged (UITextField sender);
-
 		void ReleaseDesignerOutlets ()
 		{
 			if (LabelCombo != null) {

@@ -6,19 +6,30 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using MVVMFramework.ViewModels;
+using MVVMFramework.ViewModel;
 using System.ComponentModel;
+using MVVMFramework.Services;
+using GalaSoft.MvvmLight.Helpers;
+using GalaSoft.MvvmLight.Views;
 
 namespace MVVMFramework.Droid
 {
     [Activity(Label = "MVVMFramework.Droid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        LoginViewModel viewModel;
-        EditText username, password;
-        TextView combo;
-        ProgressBar progressBar;
-        Button button;
+        public LoginViewModel VM
+        {
+            get { return App.Locator.Login; }
+        }
+        public EditText UsernameText{get;set;}
+        public EditText PasswordText{get;set;}
+        public TextView ComboText{get;set;}
+        public ProgressBar ProgressBar{get;set;}
+        public Button ButtonGet{get;set;}
+
+        public Binding unBind, passBind, combBind, busyBind, updatedBind;
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -26,94 +37,53 @@ namespace MVVMFramework.Droid
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            viewModel = new LoginViewModel();
+           
             // Get our button from the layout resource,
             // and attach an event to it
-            button = FindViewById<Button>(Resource.Id.myButton);
+            ButtonGet = FindViewById<Button>(Resource.Id.myButton);
+            UsernameText = FindViewById<EditText>(Resource.Id.username);
+            PasswordText = FindViewById<EditText>(Resource.Id.password);
+            ComboText = FindViewById<TextView>(Resource.Id.combo);
+            ProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
 
-            username = FindViewById<EditText>(Resource.Id.username);
-            password = FindViewById<EditText>(Resource.Id.password);
 
-            combo = FindViewById<TextView>(Resource.Id.combo);
+            //So things don't link out. 
+            //Only needed if linking all
+            //UsernameText.TextChanged += (sender, e) => {};
+            //PasswordText.TextChanged += (sender, e) => {};
+            //ButtonGet.Click += (sender, e) => {};
 
-            progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
+            ButtonGet.SetCommand("Click", VM.GetPeopleCommand);
 
-            username.TextChanged += (sender, e) => 
+            unBind = this.SetBinding(() => VM.Username, 
+                () => UsernameText.Text,
+                BindingMode.TwoWay);
+
+            passBind = this.SetBinding(() => VM.Password, 
+                () => PasswordText.Text,
+                BindingMode.TwoWay);
+
+            combBind = this.SetBinding(() => VM.ComboDisplay,
+                () => ComboText.Text,
+                BindingMode.OneWay);
+
+            busyBind = this.SetBinding(() => VM.IsBusy).WhenSourceChanges(() =>
                 {
-                    viewModel.Username = username.Text;
-                };
-
-            password.TextChanged += (sender, e) => 
-                {
-                    viewModel.Password = password.Text;
-                };
-
-
-            username.Text = viewModel.Username;
-            password.Text = viewModel.Password;
-            combo.Text = viewModel.ComboDisplay;
-            progressBar.Visibility = ViewStates.Gone;
-
-           
-            button.Click += delegate
-            {
-               viewModel.GetPeopleCommand.Execute(null);
-            };
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-            viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            viewModel.People.CollectionChanged += ViewModel_People_CollectionChanged;
-               
-        }
-
-
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-            viewModel.PropertyChanged -= ViewModel_PropertyChanged;
-            viewModel.People.CollectionChanged -= ViewModel_People_CollectionChanged;
-        }
-
-        void ViewModel_People_CollectionChanged (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            RunOnUiThread(() =>Toast.MakeText(this, "Count: " + viewModel.People.Count, ToastLength.Short).Show());
-            
-        }
-
-        void ViewModel_PropertyChanged (object sender, PropertyChangedEventArgs e)
-        {
-            RunOnUiThread(() =>
-                {
-                    switch(e.PropertyName)
-                    {
-                        
-                        case LoginViewModel.ComboDisplayPropertyName:
-                            combo.Text = viewModel.ComboDisplay;
-                            break;
-                        case BaseViewModel.IsBusyPropertyName:
-
-                            if(viewModel.IsBusy)
-                            {
-                                progressBar.Visibility = ViewStates.Visible;
-                                progressBar.Indeterminate = true;
-                                button.Enabled = false;
-
-                            }
-                            else
-                            {
-                                progressBar.Visibility = ViewStates.Gone;
-                                progressBar.Indeterminate = false;
-                                button.Enabled = true;
-                            }
-
-                            break;
-                    }
+                    ButtonGet.Enabled = !VM.IsBusy;
+                    if(VM.IsBusy)
+                        ProgressBar.Visibility = ViewStates.Visible;
+                    else
+                        ProgressBar.Visibility = ViewStates.Invisible;
                 });
+
+            updatedBind = this.SetBinding(() => VM.People)
+                .WhenSourceChanges(() =>
+                    {
+                        RunOnUiThread(() =>Toast.MakeText(this, "Count: " + VM.People.Count, ToastLength.Short).Show()); 
+
+                    });
         }
+            
     }
 }
 

@@ -28,6 +28,11 @@ namespace MVVMFramework.Services
                     {
                         FirstName = "Craig",
                         LastName = "Dunn"
+                    },
+                    new Person
+                    {
+                        FirstName ="Da Cheese",
+                        LastName="Da Baron"
                     }
             };
 

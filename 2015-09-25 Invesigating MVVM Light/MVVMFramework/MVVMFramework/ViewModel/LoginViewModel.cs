@@ -1,26 +1,24 @@
-﻿using System;
-using MVVMFramework.Interfaces;
-using MVVMFramework.Services;
+﻿using MVVMFramework.Interfaces;
 using System.Collections.ObjectModel;
 using MVVMFramework.Models;
-using System.Windows.Input;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Command;
 
-namespace MVVMFramework.ViewModels
+namespace MVVMFramework.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
         IDataStore dataStore;
 
         public ObservableCollection<Person> People { get; set; }
-        public LoginViewModel()
+        public LoginViewModel(IDataStore dataStore)
         {
-            this.dataStore = new OfflineDataStore();
+            this.dataStore = dataStore;
             People = new ObservableCollection<Person>();
         }
 
         RelayCommand getPeopleCommand;
-        public ICommand GetPeopleCommand
+        public RelayCommand GetPeopleCommand
         {
             get { 
                 return getPeopleCommand ?? 
@@ -33,6 +31,8 @@ namespace MVVMFramework.ViewModels
                             var people = await dataStore.GetPeopleAsync();
                             foreach(var p in people)
                                 People.Add(p);
+
+                            RaisePropertyChanged(()=>People);
 
                             IsBusy = false;
     
@@ -49,10 +49,10 @@ namespace MVVMFramework.ViewModels
             get { return username; }
             set 
             { 
-                SetProperty(ref username, value, onChanged: ()=>
+                if (Set(() => Username, ref username, value))
                 {
-                    OnPropertyChanged(ComboDisplayPropertyName);
-                }); 
+                    RaisePropertyChanged(() => ComboDisplay);
+                } 
             }
         }
 
@@ -63,10 +63,10 @@ namespace MVVMFramework.ViewModels
             get { return password; }
             set 
             { 
-                SetProperty(ref password, value, onChanged: ()=>
+                if (Set(() => Password, ref password, value))
                 {
-                    OnPropertyChanged(ComboDisplayPropertyName);
-                }); 
+                    RaisePropertyChanged(() => ComboDisplay);
+                } 
             }
         }
 

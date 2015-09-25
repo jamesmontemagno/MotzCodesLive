@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using MVVMFramework.ViewModel;
 
 namespace MVVMFramework.iOS
 {
@@ -8,6 +9,12 @@ namespace MVVMFramework.iOS
     [Register("AppDelegate")]
     public class AppDelegate : UIApplicationDelegate
     {
+
+        static ViewModelLocator locator;
+        public static ViewModelLocator Locator
+        {
+            get { return locator ?? (locator = new ViewModelLocator()); }
+        }
         // class-level declarations
 
         public override UIWindow Window

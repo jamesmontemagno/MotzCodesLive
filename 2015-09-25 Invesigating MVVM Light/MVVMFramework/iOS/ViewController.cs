@@ -1,15 +1,25 @@
 ﻿using System;
         
 using UIKit;
-using MVVMFramework.ViewModels;
+using MVVMFramework.ViewModel;
 using GCDiscreetNotification;
 using System.ComponentModel;
+using GalaSoft.MvvmLight.Helpers;
 
 namespace MVVMFramework.iOS
 {
     public partial class ViewController : UIViewController
     {
-        LoginViewModel viewModel;
+
+        public LoginViewModel VM
+        {
+            get { return AppDelegate.Locator.Login; }
+        }
+            
+
+
+        Binding unBind, passBind, combBind, busyBind, updatedBind;
+
         public ViewController(IntPtr handle)
             : base(handle)
         {        
@@ -20,95 +30,68 @@ namespace MVVMFramework.iOS
         {
             base.ViewDidLoad();
 
-            // Code to start the Xamarin Test Cloud Agent
+
            
-            viewModel = new LoginViewModel();
             // Perform any additional setup after loading the view, typically from a nib.
             Button.AccessibilityIdentifier = "myButton";
-            Button.TouchUpInside += delegate
-            {
-                viewModel.GetPeopleCommand.Execute(null);
-                      
-            };
+           
+            Button.SetCommand("TouchUpInside", VM.GetPeopleCommand);
 
+            unBind = this.SetBinding(() => VM.Username, 
+                () => TextUsername.Text,
+                BindingMode.TwoWay)
+                .UpdateTargetTrigger("EditingChanged");
 
-        }
+            passBind = this.SetBinding(() => VM.Password, 
+                () => TextPassword.Text,
+                BindingMode.TwoWay)
+                .UpdateTargetTrigger("EditingChanged");
 
-        partial void PasswordChanged(UITextField sender)
-        {
-            viewModel.Password = TextPassword.Text;
-        }
+            combBind = this.SetBinding(() => VM.ComboDisplay,
+                () => LabelCombo.Text,
+                BindingMode.OneWay);
 
-        partial void UsernameChanged(UITextField sender)
-        {
-            viewModel.Username = TextUsername.Text;
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
-            viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            viewModel.People.CollectionChanged += ViewModel_People_CollectionChanged;
-
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-            viewModel.PropertyChanged -= ViewModel_PropertyChanged;
-            viewModel.People.CollectionChanged -= ViewModel_People_CollectionChanged;
-
-        }
-
-        void ViewModel_PropertyChanged (object sender, PropertyChangedEventArgs e)
-        {
-            InvokeOnMainThread(() =>
+            busyBind = this.SetBinding(() => VM.IsBusy).WhenSourceChanges(() =>
                 {
-                    switch(e.PropertyName)
-                    {
-                        case LoginViewModel.ComboDisplayPropertyName:
-                            LabelCombo.Text = viewModel.ComboDisplay;
-                            break;
-                        case BaseViewModel.IsBusyPropertyName:
-
-                            if(viewModel.IsBusy)
-                            {
-                                ProgressBar.StartAnimating();
-                                Button.Enabled = false;
-
-                            }
-                            else
-                            {
-                                ProgressBar.StopAnimating();
-                                Button.Enabled = true;
-                            }
-
-                            break;
-                    }
+                    Button.Enabled = !VM.IsBusy;
+                    if(VM.IsBusy)
+                        ProgressBar.StartAnimating();
+                    else
+                        ProgressBar.StopAnimating();
                 });
-        }
 
-        GCDiscreetNotificationView notificationView;
-        void ViewModel_People_CollectionChanged (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            InvokeOnMainThread(async () =>
+            updatedBind = this.SetBinding(() => VM.People)
+                .WhenSourceChanges(() =>
                 {
-                     notificationView = new GCDiscreetNotificationView (
-                        text: "There are " + viewModel.People.Count + " people",
+                        notificationView = new GCDiscreetNotificationView (
+                            text: "There are " + VM.People.Count + " people",
                             activity: false,
                             presentationMode: GCDNPresentationMode.Bottom,
                             view: View
                         );
 
-                  
-                    notificationView.ShowAndDismissAfter (1);
+
+                        notificationView.ShowAndDismissAfter (1);
                 });
         }
 
+
+
+       
+
+        GCDiscreetNotificationView notificationView;
+
+
         public override void DidReceiveMemoryWarning()
-        {        
-            base.DidReceiveMemoryWarning();        
-            // Release any cached data, images, etc that aren't in use.        
+        {
+            base.DidReceiveMemoryWarning();
+            //cleanup
+        }
+
+        public override void ViewDidUnload()
+        {
+            base.ViewDidUnload();
+            //cleanup
         }
     }
 }
