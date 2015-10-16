@@ -13,6 +13,8 @@ Sample Resources for Motz Codes Live Sessions
 * 2015-09-11: [Pull to Refresh in Xamarin.Forms](https://www.youtube.com/watch?v=qYsjgiNGkrw)
 * 2015-09-18: [Introduction to MVVM](https://www.youtube.com/watch?v=eBcGRV3tp24)
 * 2015-09-25 [Investigating MVVM Light Toolkit](https://youtu.be/NnDw5lNJBFo)
+* 2015-10-09 [What’s new in C# 6!](https://www.youtube.com/watch?v=2l4q8wE9hW4)
+* 2015-10-16 [Xamarin RC0 Features](https://www.youtube.com/watch?v=UJoCxnni16c)
 
 # Request a Topic
 Simply create a new issue for a request!
