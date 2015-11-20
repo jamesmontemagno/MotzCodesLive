@@ -15,6 +15,12 @@ Sample Resources for Motz Codes Live Sessions
 * 2015-09-25 [Investigating MVVM Light Toolkit](https://youtu.be/NnDw5lNJBFo)
 * 2015-10-09 [What’s new in C# 6!](https://www.youtube.com/watch?v=2l4q8wE9hW4)
 * 2015-10-16 [Xamarin RC0 Features](https://www.youtube.com/watch?v=UJoCxnni16c)
+* 2015-11-13 [Inspecting the Inspector](https://www.youtube.com/watch?v=toyEKYlwaDA)
+* 2015-11-20 [Simplifying App Permissions](https://www.youtube.com/watch?v=I7CjzAUoEVI)
+
+# Upcoming
+* Plugins 2.0!
+* Live Code with Frank Krueger
 
 # Request a Topic
 Simply create a new issue for a request!
