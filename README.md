@@ -17,10 +17,11 @@ Sample Resources for Motz Codes Live Sessions
 * 2015-10-16 [Xamarin RC0 Features](https://www.youtube.com/watch?v=UJoCxnni16c)
 * 2015-11-13 [Inspecting the Inspector](https://www.youtube.com/watch?v=toyEKYlwaDA)
 * 2015-11-20 [Simplifying App Permissions](https://www.youtube.com/watch?v=I7CjzAUoEVI)
+* 2015-12-04 [PCL vs Shared Code Projects](https://www.youtube.com/watch?v=OO4JtmeMXcg)
+* 2015-12-11 [Continuous Coding with Frank Krueger](https://www.youtube.com/watch?v=lH90fVkXQx8)
 
 # Upcoming
 * Plugins 2.0!
-* Live Code with Frank Krueger
 
 # Request a Topic
 Simply create a new issue for a request!
