@@ -19,12 +19,15 @@ Sample Resources for Motz Codes Live Sessions
 * 2015-11-20 [Simplifying App Permissions](https://www.youtube.com/watch?v=I7CjzAUoEVI)
 * 2015-12-04 [PCL vs Shared Code Projects](https://www.youtube.com/watch?v=OO4JtmeMXcg)
 * 2015-12-11 [Continuous Coding with Frank Krueger](https://www.youtube.com/watch?v=lH90fVkXQx8)
+* 2015-12-18 [BreweryDB for .NET with Mike James](https://youtu.be/TnEHrgNvugE)
 * 2016-01-15 [Continuous Integration with AppVeyor and Jon Dick](https://www.youtube.com/watch?v=D0gWjHhJ3IU)
+* 2016-01-22 [Azure Mobile Apps - Easy Tables](https://youtu.be/Bi2TxyiK9wM)
+* 2016-01-29 [Introduction Mvvm Helpers](https://youtu.be/OcCgpsNWHlY)
+* 2016-02-12 [Bitrise - Continuous Integration & Deploymnet](https://youtu.be/1UeNajpjIXY)
 
 # Upcoming
 * Plugins 2.0!
 * App Indexing
-* Azure Easy Tables
 
 # Request a Topic
 Simply create a new issue for a request!
