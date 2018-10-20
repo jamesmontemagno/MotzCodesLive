@@ -1,8 +1,11 @@
 # Motz Codes Live
-Sample Resources for Motz Codes Live Sessions
+Sample Resources for [Motz Codes Live Sessions on Twitch](http://twitch.tv/jamesmontemagno)! If you miss a live show don't worry I export all of them to YouTube!
+
+I code on the follow
 
 ### Follow Me
-* Blog: http://motzcod.es
+* Blog: http://montemagno.com
+* Twitch: http://twitch.tv/jamesmontemagno
 * Twitter: http://www.twitter.com/jamesmontemagno
 
 # Video Recordings:
@@ -24,10 +27,6 @@ Sample Resources for Motz Codes Live Sessions
 * 2016-01-22 [Azure Mobile Apps - Easy Tables](https://youtu.be/Bi2TxyiK9wM)
 * 2016-01-29 [Introduction Mvvm Helpers](https://youtu.be/OcCgpsNWHlY)
 * 2016-02-12 [Bitrise - Continuous Integration & Deploymnet](https://youtu.be/1UeNajpjIXY)
-
-# Upcoming
-* Plugins 2.0!
-* App Indexing
 
 # Request a Topic
 Simply create a new issue for a request!
