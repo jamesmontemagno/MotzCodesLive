@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:XamChat"
+             xmlns:viewmodel="clr-namespace:XamChat.ViewModel"
+             x:Class="XamChat.MainPage">
+
+    <ContentPage.BindingContext>
+        <viewmodel:ChatViewModel/>
+    </ContentPage.BindingContext>
+    <StackLayout Padding="10">
+        <Entry Text="{Binding ChatMessage.User}"/>
+        <Entry Text="{Binding ChatMessage.Message}"/>
+
+        <Button Text="Send Message" 
+                IsEnabled="{Binding IsConnected}"
+                Command="{Binding SendMessageCommand}"/>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"/>
+
+        <ListView ItemsSource="{Binding Messages}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Message}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>            
+        </ListView>
+
+    </StackLayout>
+
+</ContentPage>

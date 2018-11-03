@@ -51,7 +51,8 @@ namespace SignalRChat
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // Turnings this off for now so we can communicate on the local host for desktp
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
