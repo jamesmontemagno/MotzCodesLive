@@ -5,6 +5,8 @@ using XamChat.Model;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System;
+using Xamarin.Essentials;
+using XamChat.Helpers;
 
 namespace XamChat.ViewModel
 {
@@ -36,6 +38,11 @@ namespace XamChat.ViewModel
         Random random;
         public ChatViewModel()
         {
+            if (DesignMode.IsDesignModeEnabled)
+                return;
+
+            Title = Settings.Group;
+
             ChatMessage = new ChatMessage();
             Messages = new ObservableRangeCollection<ChatMessage>();
             SendMessageCommand = new Command(async () => await SendMessage());
@@ -64,6 +71,11 @@ namespace XamChat.ViewModel
                 var finalMessage = $"{user} says {message}";
                 SendLocalMessage(finalMessage);
             });
+
+            hubConnection.On<string>("EnteredOrLeft", (message) =>
+            {
+                SendLocalMessage(message);
+            });
         }
 
 
@@ -75,6 +87,7 @@ namespace XamChat.ViewModel
             try
             {                
                 await hubConnection.StartAsync();
+                await hubConnection.SendAsync("AddToGroup", Settings.Group, Settings.UserName);
                 IsConnected = true;
                 SendLocalMessage("Connected...");
             }
@@ -89,6 +102,7 @@ namespace XamChat.ViewModel
             if (!IsConnected)
                 return;
 
+            await hubConnection.SendAsync("RemoveFromGroup", Settings.Group, Settings.UserName);
             await hubConnection.StopAsync();
             IsConnected = false;
             SendLocalMessage("Disconnected...");
@@ -99,8 +113,9 @@ namespace XamChat.ViewModel
             try
             {
                 IsBusy = true;
-                await hubConnection.InvokeAsync("SendMessage",
-                    ChatMessage.User,
+                await hubConnection.InvokeAsync("SendMessageGroup",
+                    Settings.Group,
+                    Settings.UserName,
                     ChatMessage.Message );
             }
             catch (Exception ex)

@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 using XamChat.ViewModel;
 
-namespace XamChat
+namespace XamChat.View
 {
-    public partial class MainPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class GroupChatPage : ContentPage
     {
         ChatViewModel vm;
         ChatViewModel VM
         {
             get => vm ?? (vm = (ChatViewModel)BindingContext);
         }
-        public MainPage()
+        public GroupChatPage()
         {
             InitializeComponent();
         }
@@ -23,13 +26,17 @@ namespace XamChat
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            VM.ConnectCommand.Execute(null);
+
+            if(!DesignMode.IsDesignModeEnabled)
+                VM.ConnectCommand.Execute(null);
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            VM.DisconnectCommand.Execute(null);
+
+            if (!DesignMode.IsDesignModeEnabled)
+                VM.DisconnectCommand.Execute(null);
         }
     }
 }
