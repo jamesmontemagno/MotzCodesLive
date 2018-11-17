@@ -55,7 +55,7 @@ namespace XamChat.ViewModel
                 ip = "10.0.2.2";
 
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"http://{ip}:5000/chatHub")
+                .WithUrl($"http://{ip}:5000/hubs/chat")
                 .Build();
 
             hubConnection.Closed += async (error) =>
