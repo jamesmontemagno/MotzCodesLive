@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamChat.View;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace XamChat
@@ -11,7 +12,7 @@ namespace XamChat
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()
