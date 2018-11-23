@@ -1,0 +1,42 @@
+﻿@inherits BlazorClient.Components.ChatComponentModel
+
+@if (@HeaderTemplate != null)
+{
+    @HeaderTemplate(Messages)
+}
+else
+{
+    <div class="jumbotron"><h1>Blazor Chat</h1></div>
+}
+
+<ul class="chat-list">
+    @if (Messages != null)
+    {
+        @foreach (var message in Messages)
+        {
+            if (ItemTemplate != null)
+            {
+                @ItemTemplate(message)
+            }
+            else
+            {
+                <li class="chat-message">@message.Message</li>
+            }
+        }
+    }
+</ul>
+@if (IsConnected)
+{
+    <div class="form-group">
+        <label for="@nameof(Room)">@nameof(Room)</label>
+        <input type="text" name="@nameof(Room)" value="@Room" onchange="@JoinRoom" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="@nameof(NewMessage)">@nameof(NewMessage)</label>
+        <input type="text" name="@nameof(NewMessage)" value="@NewMessage" onchange="@SendNewMessage" class="form-control" />
+    </div>
+}
+else
+{
+    <div class="bs-info">Connecting to server...</div>
+}
