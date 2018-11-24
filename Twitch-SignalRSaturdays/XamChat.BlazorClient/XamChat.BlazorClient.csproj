@@ -6,16 +6,16 @@
     <RunArguments>blazor serve</RunArguments>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\XamChat.Core\XamChat.Core.csproj" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.7.0" PrivateAssets="all" />
-    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.7.0" />
+    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.6.0" />
+    <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.7" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <ProjectReference Include="..\XamChat.Core\XamChat.Core.csproj" />
+  </ItemGroup>
+  
 </Project>
