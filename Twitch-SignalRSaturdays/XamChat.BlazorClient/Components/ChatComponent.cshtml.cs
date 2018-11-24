@@ -1,41 +1,37 @@
 ﻿using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.Services;
-using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XamChat.Core;
+using XamChat.BlazorClient.Services;
 using XamChat.Core.EventHandlers;
 
 namespace XamChat.BlazorClient.Components
 {
-	public class ChatComponentModel : BlazorComponent 
+	public class ChatComponentModel : BlazorComponent
 	{
-		
-		[Inject] ChatService Service { get; set; }
+
+		[Inject] BlazorChatService Service { get; set; }
 		[Inject] IUriHelper UriHelper { get; set; }
-		[Inject] IConfiguration Configuration { get; set; }
 
 		[Parameter] protected RenderFragment<MessageEventArgs> ItemTemplate { get; set; }
 		[Parameter] protected RenderFragment<List<MessageEventArgs>> HeaderTemplate { get; set; }
 
 
-		private const string UserName = "Blazor App";
-
+		internal string UserName;
+		internal string Server;
 		internal string Room;
 		internal List<MessageEventArgs> Messages { get; set; }
 		internal string NewMessage;
 		internal bool IsConnected;
+		internal bool IsConnecting;
+		internal bool IsRoomJoined;
 
 		protected override async Task OnInitAsync()
 		{
 			await base.OnInitAsync();
 			Messages = new List<MessageEventArgs>();
-			Service.OnReceivedMessage += Service_OnReceivedMessage;
-			Service.Init(Configuration["ChatServer"]);
-			await Service.ConnectAsync();
-			IsConnected = true;
-			Messages.Add(new MessageEventArgs("You are connected..."));
 		}
 
 		private void Service_OnReceivedMessage(object sender, MessageEventArgs e)
@@ -44,16 +40,48 @@ namespace XamChat.BlazorClient.Components
 			StateHasChanged();
 		}
 
-		internal async Task JoinRoom(UIChangeEventArgs args)
+		internal async Task ConnectServer(UIMouseEventArgs args)
 		{
-			Room = args.Value.ToString();
-			await Service.JoinChannelAsync(Room, UserName);
+			if (string.IsNullOrWhiteSpace(Server) || string.IsNullOrWhiteSpace(UserName))
+				return;
+
+			IsConnecting = true;
+			IsConnected = false;
+			Service.OnReceivedMessage += Service_OnReceivedMessage;
+			Service.Init(Server);
+			try
+			{
+				await Service.ConnectAsync();
+
+				IsConnecting = false;
+				IsConnected = true;
+				Messages.Add(new MessageEventArgs("You are connected..."));
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.GetBaseException().Message);
+				IsConnecting = false;
+				IsConnected = false;
+				Messages.Add(new MessageEventArgs(ex.GetBaseException().Message));
+			}
 		}
 
-		internal async Task SendNewMessage(UIChangeEventArgs args)
+		internal async Task JoinRoom(string Room)
 		{
-			NewMessage = args.Value.ToString();
-			await Service.SendMessageAsync(Room, "Blazor App", NewMessage);
+			this.Room = Room;
+			await Service.JoinChannelAsync(Room, UserName);
+			IsRoomJoined = true;
+		}
+
+		internal async Task SendNewMessage(UIMouseEventArgs args)
+		{
+			await Service.SendMessageAsync(Room, UserName, NewMessage);
+			NewMessage = "";
+		}
+
+		internal List<string> GetRooms()
+		{
+			return Service.GetRooms();
 		}
 	}
 }
