@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using XamChat.BlazorClient.Services;
 
 namespace XamChat.BlazorClient
 {
@@ -7,6 +8,7 @@ namespace XamChat.BlazorClient
     {
         public void ConfigureServices(IServiceCollection services)
         {
+          services.AddSingleton<BlazorChatService>((o) => new BlazorChatService());
         }
 
         public void Configure(IBlazorApplicationBuilder app)
