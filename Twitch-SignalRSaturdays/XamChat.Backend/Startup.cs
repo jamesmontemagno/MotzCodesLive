@@ -27,6 +27,12 @@ namespace XamChat.Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+              builder.AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .WithOrigins("http://localhost:5002");
+            }));
             services.AddSignalR();
         }
 
@@ -42,9 +48,9 @@ namespace XamChat.Backend
                 app.UseHsts();
             }
 
-            // Turnings this off for now so we can communicate on the local host for desktop
-            //app.UseHttpsRedirection();
-
+      // Turnings this off for now so we can communicate on the local host for desktop
+      //app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/hubs/chat");
