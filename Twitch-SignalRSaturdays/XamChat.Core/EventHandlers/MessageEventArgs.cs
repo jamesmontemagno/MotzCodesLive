@@ -1,6 +1,6 @@
 ﻿namespace XamChat.Core.EventHandlers
 {
-    public class MessageEventArgs
+    public class MessageEventArgs : IMessageEventArgs
     {
         public MessageEventArgs(string message)
         {
