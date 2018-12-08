@@ -6,13 +6,12 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\XamChat.Core\XamChat.Core.csproj" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
   </ItemGroup>
+
+
+  <Import Project="..\XamChat.Shared.Core\XamChat.Shared.Core.projitems" Label="Shared" />
 
 </Project>

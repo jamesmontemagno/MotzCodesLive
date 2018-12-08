@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamChat.Core;
 using XamChat.View;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -11,6 +12,8 @@ namespace XamChat
         public App()
         {
             InitializeComponent();
+
+            DependencyService.Register<ChatService>();
 
             MainPage = new NavigationPage(new MainPage());
         }

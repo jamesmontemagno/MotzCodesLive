@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Blazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XamChat.BlazorClient.Services;
+using XamChat.Core;
 using XamChat.Core.EventHandlers;
 
 namespace XamChat.BlazorClient.Components
@@ -12,7 +12,7 @@ namespace XamChat.BlazorClient.Components
 	public class ChatComponentModel : BlazorComponent
 	{
 
-		[Inject] BlazorChatService Service { get; set; }
+		[Inject] ChatService Service { get; set; }
 		[Inject] IUriHelper UriHelper { get; set; }
 
 		[Parameter] protected RenderFragment<MessageEventArgs> ItemTemplate { get; set; }

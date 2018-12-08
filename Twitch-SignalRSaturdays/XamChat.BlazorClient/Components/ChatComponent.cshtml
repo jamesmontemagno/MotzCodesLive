@@ -18,12 +18,19 @@ else
 
             @foreach (var room in GetRooms())
             {
-              <button class="btn btn-standard" onclick="@(()=>JoinRoom(room))">@room</button>
+                <button class="btn btn-standard" onclick="@(()=>JoinRoom(room))">@room</button>
             }
         </div>
     }
     else
     {
+        <div class="form-group">
+            <form onsubmit="@((x)=>StateHasChanged())">
+                <label for="@nameof(NewMessage)">@nameof(NewMessage)</label>
+                <input type="text" name="@nameof(NewMessage)" bind="@NewMessage" class="form-control" />
+                <button type="submit" class="btn btn-standard" onclick="@SendNewMessage">Send</button>
+            </form>
+        </div>
         <ul class="chat-list">
             @if (Messages != null)
             {
@@ -40,13 +47,6 @@ else
                 }
             }
         </ul>
-        <div class="form-group">
-            <form onsubmit="@((x)=>StateHasChanged())">
-                <label for="@nameof(NewMessage)">@nameof(NewMessage)</label>
-                <input type="text" name="@nameof(NewMessage)" bind="@NewMessage" class="form-control" />
-                <button type="submit" class="btn btn-standard" onclick="@SendNewMessage">Send</button>
-            </form>
-        </div>
     }
 }
 else if (!IsConnecting)

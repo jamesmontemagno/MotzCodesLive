@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-
+﻿#if BLAZOR
+using Blazor.Extensions;
+#else
+using Microsoft.AspNetCore.SignalR.Client;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,15 +21,29 @@ namespace XamChat.Core
 
         bool IsConnected { get; set; }
         Dictionary<string, string> ActiveChannels { get; } = new Dictionary<string, string>();
-        
 
-        public void Init(string ip, bool isBlazor = false)
+
+        public void Init(string ip)
         {
             hubConnection = new HubConnectionBuilder()
+#if BLAZOR
+                .WithUrl($"http://{ip}:5000/hubs/chat",
+                opt =>
+                {
+                    opt.LogLevel = SignalRLogLevel.Trace; // Client log level
+                    opt.SkipNegotiation = true;
+                    opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
+                })
+#else 
                 .WithUrl($"http://{ip}:5000/hubs/chat")
+#endif
                 .Build();
 
-            hubConnection.Closed += async (error) =>
+#if BLAZOR
+           hubConnection.OnClose(async (error) =>
+#else
+           hubConnection.Closed += async (error) =>
+#endif
             {
                 OnConnectionClosed?.Invoke(this, new MessageEventArgs("Connection closed..."));
                 IsConnected = false;
@@ -39,17 +56,27 @@ namespace XamChat.Core
                 {
                     // Exception!
                 }
+#if BLAZOR
+            });
+#else
             };
+#endif
 
             hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
             {
                 var finalMessage = $"{user} says {message}";
                 OnReceivedMessage?.Invoke(this, new MessageEventArgs(finalMessage));
+#if BLAZOR
+                return Task.CompletedTask;
+#endif
             });
 
             hubConnection.On<string>("EnteredOrLeft", (message) =>
             {
                 OnEnteredOrExited?.Invoke(this, new MessageEventArgs(message));
+#if BLAZOR
+                return Task.CompletedTask;
+#endif
             });
         }
 
@@ -78,7 +105,11 @@ namespace XamChat.Core
             if (!IsConnected || !ActiveChannels.ContainsKey(group))
                 return;
 
+#if BLAZOR
+            await hubConnection.InvokeAsync("RemoveFromGroup", group, userName);
+#else            
             await hubConnection.SendAsync("RemoveFromGroup", group, userName);
+#endif
             ActiveChannels.Remove(group);
         }
 
@@ -87,8 +118,11 @@ namespace XamChat.Core
             if (!IsConnected || ActiveChannels.ContainsKey(group))
                 return;
 
-
+#if BLAZOR
+            await hubConnection.InvokeAsync("AddToGroup", group, userName);
+#else            
             await hubConnection.SendAsync("AddToGroup", group, userName);
+#endif
             ActiveChannels.Add(group, userName);
 
         }
@@ -99,6 +133,16 @@ namespace XamChat.Core
                     group,
                     userName,
                     message);
+        }
+
+        public List<string> GetRooms()
+        {
+            return new List<string>
+                        {
+                                ".NET",
+                                "ASP.NET",
+                                "Xamarin"
+                        };
         }
     }
 }

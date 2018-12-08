@@ -10,10 +10,8 @@ using XamChat.Helpers;
 
 namespace XamChat.ViewModel
 {
-    public class ChatViewModel : BaseViewModel
+    public class ChatViewModel : ViewModelBase
     {
-        HubConnection hubConnection;
-
         public ChatMessage ChatMessage { get; }
 
         public ObservableRangeCollection<ChatMessage> Messages { get; }
@@ -54,28 +52,22 @@ namespace XamChat.ViewModel
             if (Device.RuntimePlatform == Device.Android)
                 ip = "10.0.2.2";
 
-            hubConnection = new HubConnectionBuilder()
-                .WithUrl($"http://{ip}:5000/hubs/chat")
-                .Build();
+            Service.Init(ip);
 
-            hubConnection.Closed += async (error) =>
+            Service.OnReceivedMessage += (sender, args) =>
             {
-                SendLocalMessage("Connection Closed...");
-                IsConnected = false;
-                await Task.Delay(random.Next(0, 5) * 1000);
-                await Connect();
+                SendLocalMessage(args.Message);
             };
 
-            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+            Service.OnEnteredOrExited += (sender, args) =>
             {
-                var finalMessage = $"{user} says {message}";
-                SendLocalMessage(finalMessage);
-            });
+                SendLocalMessage(args.Message);
+            };
 
-            hubConnection.On<string>("EnteredOrLeft", (message) =>
+            Service.OnConnectionClosed += (sender, args) =>
             {
-                SendLocalMessage(message);
-            });
+                SendLocalMessage(args.Message);  
+            };
         }
 
 
@@ -86,8 +78,8 @@ namespace XamChat.ViewModel
                 return;
             try
             {                
-                await hubConnection.StartAsync();
-                await hubConnection.SendAsync("AddToGroup", Settings.Group, Settings.UserName);
+                await Service.ConnectAsync();
+                await Service.JoinChannelAsync(Settings.Group, Settings.UserName);
                 IsConnected = true;
                 SendLocalMessage("Connected...");
             }
@@ -101,9 +93,8 @@ namespace XamChat.ViewModel
         {
             if (!IsConnected)
                 return;
-
-            await hubConnection.SendAsync("RemoveFromGroup", Settings.Group, Settings.UserName);
-            await hubConnection.StopAsync();
+            await Service.LeaveChannelAsync(Settings.Group, Settings.UserName);
+            await Service.DisconnectAsync();
             IsConnected = false;
             SendLocalMessage("Disconnected...");
         }
@@ -113,10 +104,9 @@ namespace XamChat.ViewModel
             try
             {
                 IsBusy = true;
-                await hubConnection.InvokeAsync("SendMessageGroup",
-                    Settings.Group,
+                await Service.SendMessageAsync(Settings.Group,
                     Settings.UserName,
-                    ChatMessage.Message );
+                    ChatMessage.Message);
             }
             catch (Exception ex)
             {

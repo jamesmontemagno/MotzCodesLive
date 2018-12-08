@@ -5,5 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
+    <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.7" />
   </ItemGroup>
 </Project>
