@@ -8,17 +8,12 @@ using XamChat.View;
 
 namespace XamChat.ViewModel
 {
-    public class LobbyViewModel : BaseViewModel
+    public class LobbyViewModel : ViewModelBase
     {
         public List<string> Rooms { get; }
         public LobbyViewModel()
         {
-            Rooms = new List<string>
-            {
-                ".NET",
-                "ASP.NET",
-                "Xamarin"
-            };
+            Rooms = Service.GetRooms();
         }
 
         public string UserName

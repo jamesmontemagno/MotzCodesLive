@@ -21,4 +21,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Import Project="..\..\XamChat.Shared.Core\XamChat.Shared.Core.projitems" Label="Shared" />
 </Project>

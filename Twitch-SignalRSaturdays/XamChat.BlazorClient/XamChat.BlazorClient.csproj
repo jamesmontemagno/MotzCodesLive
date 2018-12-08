@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RunCommand>dotnet</RunCommand>
+    <RunArguments>blazor serve</RunArguments>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;BLAZOR</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;BLAZOR</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.7.0" PrivateAssets="all" />
+    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.6.0" />
+    <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.7" />
+  </ItemGroup>
+  
+  <Import Project="..\XamChat.Shared.Core\XamChat.Shared.Core.projitems" Label="Shared" />
+  
+</Project>

@@ -1,0 +1,65 @@
+﻿@inherits BlazorClient.Components.ChatComponentModel
+
+@if (@HeaderTemplate != null)
+{
+    @HeaderTemplate(Messages)
+}
+else
+{
+    <div class="jumbotron"><h1>Blazor Chat @(IsRoomJoined ? Room : "")</h1></div>
+}
+
+@if (IsConnected)
+{
+    @if (!IsRoomJoined)
+    {
+        <div class="form-group">
+            <label for="@nameof(Room)">@nameof(Room)</label>
+
+            @foreach (var room in GetRooms())
+            {
+                <button class="btn btn-standard" onclick="@(()=>JoinRoom(room))">@room</button>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <form onsubmit="@((x)=>StateHasChanged())">
+                <label for="@nameof(NewMessage)">@nameof(NewMessage)</label>
+                <input type="text" name="@nameof(NewMessage)" bind="@NewMessage" class="form-control" />
+                <button type="submit" class="btn btn-standard" onclick="@SendNewMessage">Send</button>
+            </form>
+        </div>
+        <ul class="chat-list">
+            @if (Messages != null)
+            {
+                @foreach (var message in Messages)
+                {
+                    @if (ItemTemplate != null)
+                    {
+                        @ItemTemplate(message)
+                    }
+                    else
+                    {
+                        <li class="chat-message">@message.Message</li>
+                    }
+                }
+            }
+        </ul>
+    }
+}
+else if (!IsConnecting)
+{
+    <div class="form-group">
+        <label for="@nameof(UserName)">@nameof(UserName)</label>
+        <input type="text" name="@nameof(UserName)" bind="@UserName" class="form-control" placeholder="Username *" />
+        <label for="@nameof(Server)">@nameof(Server)</label>
+        <input type="text" name="@nameof(Server)" bind="@Server" class="form-control" placeholder="Server *" />
+        <button class="btn btn-standard" onclick="@ConnectServer">Connect</button>
+    </div>
+}
+else
+{
+    <div class="bs-info">Connecting to server...</div>
+}

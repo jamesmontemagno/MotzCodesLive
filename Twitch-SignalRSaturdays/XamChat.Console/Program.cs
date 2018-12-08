@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using XamChat.Core;
 using XamChat.Core.EventHandlers;
@@ -18,7 +19,7 @@ namespace XamChat.ConsoleApp
 
             await service.ConnectAsync();
             Console.WriteLine("You are connected...");
-            Console.WriteLine("Enter room (.NET, Xamarin, ASP.NET):");
+            Console.WriteLine($"Enter room ({string.Join(",", service.GetRooms())}):");
             var room = Console.ReadLine();
 
             await service.JoinChannelAsync(room, "console app");
