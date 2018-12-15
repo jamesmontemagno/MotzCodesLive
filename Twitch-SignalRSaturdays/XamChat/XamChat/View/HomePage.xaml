@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"         
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.BarItemColor="{StaticResource PrimaryColor}"
+            android:TabbedPage.BarSelectedItemColor="{StaticResource SecondaryColor}"
+            android:TabbedPage.IsSwipePagingEnabled="False"
+            xmlns:pages="clr-namespace:XamChat.View"
+            x:Class="XamChat.View.HomePage">
+    <pages:XamChatNavigationPage Title="Dashboard"
+                    Icon="{OnPlatform Android=tab_dashboard, iOS=tab_dashboard}">
+        <x:Arguments>
+            <pages:MainPage />
+        </x:Arguments>
+    </pages:XamChatNavigationPage>
+    <pages:XamChatNavigationPage Title="Chats"
+                    Icon="{OnPlatform Android=tab_chat, iOS=tab_chat}">
+        <x:Arguments>
+            <pages:MainPage />
+        </x:Arguments>
+    </pages:XamChatNavigationPage>
+    <pages:XamChatNavigationPage Title="Favs"
+                    Icon="{OnPlatform Android=tab_favorites, iOS=tab_favorites}">
+        <x:Arguments>
+            <pages:MainPage />
+        </x:Arguments>
+    </pages:XamChatNavigationPage>
+</TabbedPage>

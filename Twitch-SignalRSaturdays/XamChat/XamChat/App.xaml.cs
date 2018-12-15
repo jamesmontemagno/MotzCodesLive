@@ -15,7 +15,7 @@ namespace XamChat
 
             DependencyService.Register<ChatService>();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new HomePage();
         }
 
         protected override void OnStart()
