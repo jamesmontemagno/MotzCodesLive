@@ -8,16 +8,10 @@
     <ContentPage.BindingContext>
         <viewmodel:LobbyViewModel/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Profile" x:Name="ToolbarProfile"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>
-        
-        <Entry Text="{Binding UserName}"
-               Placeholder="Username:"
-               PlaceholderColor="{StaticResource PrimaryColor}"
-               TextColor="{StaticResource PrimaryTextColor}"
-               IsSpellCheckEnabled="False"
-               Margin="10,10,10,0"
-               HorizontalOptions="FillAndExpand"
-               Visual="Material"/>
         <Label Margin="10,0" FontSize="Small" Text="Rooms"/>
         <ListView ItemsSource="{Binding Rooms}"
                   ItemSelected="ListView_ItemSelected"/>

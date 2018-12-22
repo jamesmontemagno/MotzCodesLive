@@ -28,6 +28,7 @@ namespace XamChat.ViewModel
                 });
             }
         }
+        
 
         public Command SendMessageCommand { get; }
         public Command ConnectCommand { get; }
@@ -48,11 +49,7 @@ namespace XamChat.ViewModel
             DisconnectCommand = new Command(async () => await Disconnect());
             random = new Random();
 
-            var ip = "localhost";
-            if (Device.RuntimePlatform == Device.Android)
-                ip = "10.0.2.2";
-
-            Service.Init(ip);
+            Service.Init(Settings.ServerIP);
 
             Service.OnReceivedMessage += (sender, args) =>
             {
@@ -107,6 +104,8 @@ namespace XamChat.ViewModel
                 await Service.SendMessageAsync(Settings.Group,
                     Settings.UserName,
                     ChatMessage.Message);
+
+                ChatMessage.Message = string.Empty;
             }
             catch (Exception ex)
             {

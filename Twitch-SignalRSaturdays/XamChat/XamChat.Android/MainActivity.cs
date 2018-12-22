@@ -16,9 +16,10 @@ namespace XamChat.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.SetFlags("Visual_Experimental");
+            ImageCircle.Forms.Plugin.Droid.ImageCircleRenderer.Init();
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());

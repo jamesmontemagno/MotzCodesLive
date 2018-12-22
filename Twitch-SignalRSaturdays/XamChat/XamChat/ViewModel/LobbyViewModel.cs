@@ -38,7 +38,7 @@ namespace XamChat.ViewModel
                 return;
 
             Settings.Group = group;
-            await navigation.PushAsync(new GroupChatPage());
+            await navigation.PushModalAsync(new XamChatNavigationPage(new GroupChatPage()));
         }
         
     }

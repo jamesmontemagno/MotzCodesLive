@@ -2,22 +2,25 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:XamChat.ViewModel"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              x:Class="XamChat.View.GroupChatPage"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <viewmodel:ChatViewModel/>
     </ContentPage.BindingContext>
-    <Grid>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done" x:Name="ToolbarDone"/>
+    </ContentPage.ToolbarItems>
+    <Grid ColumnSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackLayout Padding="10">        
-            <ListView Grid.ColumnSpan="2"
+        <ListView Grid.ColumnSpan="2"
                       ItemsSource="{Binding Messages}"
                       VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
@@ -25,29 +28,52 @@
                         <TextCell Text="{Binding Message}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>           
+            </ListView>
 
-            <Entry Grid.Row="1"
-                   HorizontalOptions="FillAndExpand"
+        <StackLayout Grid.Row="1" 
+                     Grid.ColumnSpan="2"
+                     BackgroundColor="White" 
+                     Orientation="Horizontal" 
+                     HorizontalOptions="FillAndExpand"
+                     Padding="8,4">
+            <Entry HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center"
                    Text="{Binding ChatMessage.Message}"
-                   Placeholder="Chat"
+                   Placeholder="Write a message"
                    PlaceholderColor="{StaticResource PrimaryColor}"
                    TextColor="{StaticResource PrimaryTextColor}"
-                   Visual="Material"/>
-            <Button Grid.Row="1"
-                    Grid.Column="1"
-                    Text="Send" 
-                    IsEnabled="{Binding IsConnected}"
-                    Command="{Binding SendMessageCommand}"
-                    Visual="Material"
-                    BackgroundColor="{StaticResource SecondaryColor}"
-                    TextColor="{StaticResource SecondaryTextColor}"/>
-
+                   Visual="Material"
+                   ReturnType="Send"
+                   ReturnCommand="{Binding SendMessageCommand}"/>
+            <ImageButton Margin="0,0,5,0" 
+                         CornerRadius="17"
+                         WidthRequest="34"
+                         HeightRequest="35"
+                         Padding="6"
+                         Source="{OnPlatform Android='ic_send', iOS='ic_send', UWP='Assets/ic_send.png'}"
+                         IsEnabled="{Binding IsConnected}"
+                         Command="{Binding SendMessageCommand}"
+                         Visual="Material"
+                         BackgroundColor="{StaticResource SecondaryColor}"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         android:ImageButton.IsShadowEnabled="true"
+                         android:ImageButton.ShadowColor="Gray"
+                         android:ImageButton.ShadowRadius="2">
+                <android:ImageButton.ShadowOffset>
+                    <Size>
+                        <x:Arguments>
+                            <x:Double>1</x:Double>
+                            <x:Double>1</x:Double>
+                        </x:Arguments>
+                    </Size>
+                </android:ImageButton.ShadowOffset>
+            </ImageButton>
         </StackLayout>
         <ActivityIndicator Grid.ColumnSpan="2"
-                           IsRunning="{Binding IsBusy}"
-                           IsVisible="{Binding IsBusy}"
-                           HorizontalOptions="CenterAndExpand"
-                           VerticalOptions="CenterAndExpand"/>
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"/>
     </Grid>
 </ContentPage>

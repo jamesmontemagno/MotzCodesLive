@@ -29,6 +29,13 @@ namespace XamChat.View
 
             if(!DesignMode.IsDesignModeEnabled)
                 VM.ConnectCommand.Execute(null);
+
+            ToolbarDone.Clicked += ToolbarDone_Clicked;
+        }
+
+        private async void ToolbarDone_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
         }
 
         protected override void OnDisappearing()
@@ -37,6 +44,8 @@ namespace XamChat.View
 
             if (!DesignMode.IsDesignModeEnabled)
                 VM.DisconnectCommand.Execute(null);
+
+            ToolbarDone.Clicked -= ToolbarDone_Clicked;
         }
     }
 }
