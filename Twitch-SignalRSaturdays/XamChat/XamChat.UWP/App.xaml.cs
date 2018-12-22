@@ -52,6 +52,7 @@ namespace XamChat.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
+                global::Xamarin.Forms.Forms.SetFlags("Visual_Experimental");
                 Xamarin.Forms.Forms.Init(e);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)

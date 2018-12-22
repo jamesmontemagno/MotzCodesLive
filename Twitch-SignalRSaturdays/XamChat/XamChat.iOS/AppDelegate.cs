@@ -4,6 +4,8 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace XamChat.iOS
 {
@@ -22,8 +24,12 @@ namespace XamChat.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            global::Xamarin.Forms.Forms.SetFlags("Visual_Experimental");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+
+
+            UITabBar.Appearance.SelectedImageTintColor = ((Color)App.Current.Resources["SecondaryColor"]).ToUIColor();
 
             return base.FinishedLaunching(app, options);
         }
