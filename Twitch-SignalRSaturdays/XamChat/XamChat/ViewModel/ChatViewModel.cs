@@ -1,11 +1,8 @@
 ﻿using MvvmHelpers;
 using Xamarin.Forms;
 using XamChat.Model;
-
-using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System;
-using Xamarin.Essentials;
 using XamChat.Helpers;
 
 namespace XamChat.ViewModel
@@ -49,19 +46,19 @@ namespace XamChat.ViewModel
             DisconnectCommand = new Command(async () => await Disconnect());
             random = new Random();
 
-            Service.Init(Settings.ServerIP);
+            ChatService.Init(Settings.ServerIP);
 
-            Service.OnReceivedMessage += (sender, args) =>
+            ChatService.OnReceivedMessage += (sender, args) =>
             {
                 SendLocalMessage(args.Message);
             };
 
-            Service.OnEnteredOrExited += (sender, args) =>
+            ChatService.OnEnteredOrExited += (sender, args) =>
             {
                 SendLocalMessage(args.Message);
             };
 
-            Service.OnConnectionClosed += (sender, args) =>
+            ChatService.OnConnectionClosed += (sender, args) =>
             {
                 SendLocalMessage(args.Message);  
             };
@@ -75,8 +72,8 @@ namespace XamChat.ViewModel
                 return;
             try
             {                
-                await Service.ConnectAsync();
-                await Service.JoinChannelAsync(Settings.Group, Settings.UserName);
+                await ChatService.ConnectAsync();
+                await ChatService.JoinChannelAsync(Settings.Group, Settings.UserName);
                 IsConnected = true;
                 SendLocalMessage("Connected...");
             }
@@ -90,18 +87,23 @@ namespace XamChat.ViewModel
         {
             if (!IsConnected)
                 return;
-            await Service.LeaveChannelAsync(Settings.Group, Settings.UserName);
-            await Service.DisconnectAsync();
+            await ChatService.LeaveChannelAsync(Settings.Group, Settings.UserName);
+            await ChatService.DisconnectAsync();
             IsConnected = false;
             SendLocalMessage("Disconnected...");
         }
 
         async Task SendMessage()
         {
+            if(!IsConnected)
+            {
+                await DialogService.DisplayAlert("Not connected", "Please connect to the server and try again.", "OK");
+                return;
+            }
             try
             {
                 IsBusy = true;
-                await Service.SendMessageAsync(Settings.Group,
+                await ChatService.SendMessageAsync(Settings.Group,
                     Settings.UserName,
                     ChatMessage.Message);
 

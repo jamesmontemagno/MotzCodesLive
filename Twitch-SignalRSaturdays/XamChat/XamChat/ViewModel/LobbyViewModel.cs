@@ -13,7 +13,7 @@ namespace XamChat.ViewModel
         public List<string> Rooms { get; }
         public LobbyViewModel()
         {
-            Rooms = Service.GetRooms();
+            Rooms = ChatService.GetRooms();
         }
 
         public string UserName

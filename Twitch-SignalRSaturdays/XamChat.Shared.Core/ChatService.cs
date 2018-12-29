@@ -129,6 +129,9 @@ namespace XamChat.Core
 
         public async Task SendMessageAsync(string group, string userName, string message)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Not connected");
+
             await hubConnection.InvokeAsync("SendMessageGroup",
                     group,
                     userName,
