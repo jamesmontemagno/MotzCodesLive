@@ -1,8 +1,14 @@
-﻿using System;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamChat.Core;
 using XamChat.View;
+using Xamarin.Essentials;
+using XamChat.Helpers;
+using Microsoft.AppCenter.Distribute;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace XamChat
@@ -20,6 +26,13 @@ namespace XamChat
 
         protected override void OnStart()
         {
+            if (DeviceInfo.Platform == DevicePlatform.Android && Settings.AppCenterAndroid != "AC_ANDROID")
+            {
+                AppCenter.Start($"android={Settings.AppCenterAndroid};" +
+                    "uwp={Your UWP App secret here};" +
+                    "ios={Your iOS App secret here}",
+                    typeof(Analytics), typeof(Crashes), typeof(Distribute));
+            }
             // Handle when your app starts
         }
 
