@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 #endif
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using XamChat.Core.EventHandlers;
 
@@ -23,21 +24,23 @@ namespace XamChat.Core
         Dictionary<string, string> ActiveChannels { get; } = new Dictionary<string, string>();
 
 
-        public void Init(string ip)
+        public void Init(string urlRoot, bool useHttps)
         {
+            random = new Random();
+            var url = $"http{(useHttps ? "s" : string.Empty)}://{urlRoot}/hubs/chat";
             hubConnection = new HubConnectionBuilder()
 #if BLAZOR
-                .WithUrl($"http://{ip}:5000/hubs/chat",
-                opt =>
-                {
-                    opt.LogLevel = SignalRLogLevel.Trace; // Client log level
-                    opt.SkipNegotiation = true;
-                    opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
-                })
+            .WithUrl(url,
+            opt =>
+            {
+                opt.LogLevel = SignalRLogLevel.Trace; // Client log level
+                opt.SkipNegotiation = true;
+                opt.Transport = HttpTransportType.WebSockets; // Which transport you want to use for this connection
+            })
 #else 
-                .WithUrl($"http://{ip}:5000/hubs/chat")
+            .WithUrl(url)
 #endif
-                .Build();
+            .Build();
 
 #if BLAZOR
            hubConnection.OnClose(async (error) =>
@@ -55,6 +58,7 @@ namespace XamChat.Core
                 catch (Exception ex)
                 {
                     // Exception!
+                    Debug.WriteLine(ex);
                 }
 #if BLAZOR
             });

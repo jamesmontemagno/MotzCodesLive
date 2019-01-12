@@ -48,7 +48,7 @@ namespace XamChat.BlazorClient.Components
 			IsConnecting = true;
 			IsConnected = false;
 			Service.OnReceivedMessage += Service_OnReceivedMessage;
-			Service.Init(Server);
+			Service.Init(Server, Server.ToLower() == "localhost" ? false : true);
 			try
 			{
 				await Service.ConnectAsync();

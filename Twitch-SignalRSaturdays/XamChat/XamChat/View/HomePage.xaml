@@ -14,6 +14,7 @@
             <pages:MainPage />
         </x:Arguments>
     </pages:XamChatNavigationPage>
+    <!--
     <pages:XamChatNavigationPage Title="Chats"
                     Icon="{OnPlatform Android=tab_chat, iOS=tab_chat}">
         <x:Arguments>
@@ -26,4 +27,5 @@
             <pages:MainPage />
         </x:Arguments>
     </pages:XamChatNavigationPage>
+    -->
 </TabbedPage>
